@@ -5,8 +5,18 @@ import { dummyNotesList } from "./constant";
 import ClickCounter from "./hooksExercise";
 import React, { useState, useEffect } from 'react';
 
+const initialNote = {
+  id: -1,
+  title: "",
+  content: "",
+  label: Label.other,
+};
+
 function App() {
+  const [notes, setNotes] = useState(dummyNotesList); 
+  const [createNote, setCreateNote] = useState<Note>(initialNote);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [selectedNote, setSelectedNote] = useState<Note>(initialNote);
 
   // Function to toggle a note as favorite
   const toggleFavorite = (note: Note) => {
@@ -20,23 +30,63 @@ function App() {
       }
     });
   };
-
+  const createNoteHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (createNote.title && createNote.content) {
+      // Create a new note with an ID based on the current length of notes
+      const newNote = {
+        ...createNote,
+        id: notes.length + 1, // ID is determined by the length of the notes list
+      };
+      setNotes([...notes, newNote]);
+      setCreateNote(initialNote); // Reset the createNote state
+    }
+  };
   // Use effect to observe state changes (for debugging purposes)
   useEffect(() => {
     console.log("Favorites updated: ", favorites);
   }, [favorites]);
  return (
-   <div className='app-container'>
-    <form className="note-form">
-       <div><input placeholder="Note Title"></input></div>
+  <div className='app-container'>
+  <form className="note-form" onSubmit={createNoteHandler}>
+    <div>
+      <input
+        placeholder="Note Title"
+        onChange={(event) =>
+          setCreateNote({ ...createNote, title: event.target.value })
+        }
+        required
+      />
+    </div>
 
-       <div><textarea></textarea></div>
+    <div>
+      <textarea
+        onChange={(event) =>
+          setCreateNote({ ...createNote, content: event.target.value })
+        }
+        required
+      ></textarea>
+    </div>
 
-       <div><button type="submit">Create Note</button></div>
-    </form>
+    <div>
+      <select
+        onChange={(event) =>
+          setCreateNote({ ...createNote, label: event.target.value as Label })
+        }
+        required
+      >
+        <option value={Label.personal}>Personal</option>
+        <option value={Label.study}>Study</option>
+        <option value={Label.work}>Work</option>
+        <option value={Label.other}>Other</option>
+      </select>
+    </div>
+
+    <div><button type="submit">Create Note</button></div>
+  </form>
     <ClickCounter />
     <div className="notes-grid">
-       {dummyNotesList.map((note) => (
+        {notes.map((note) => (
          <div
            key={note.id}
            className="note-item">
