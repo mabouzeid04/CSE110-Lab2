@@ -17,7 +17,9 @@ function App() {
   const [createNote, setCreateNote] = useState<Note>(initialNote);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note>(initialNote);
-
+  const deleteNote = (id: number) => {
+    setNotes(notes.filter((note) => note.id !== id));
+  };
   // Function to toggle a note as favorite
   const toggleFavorite = (note: Note) => {
     setFavorites((prevFavorites) => {
@@ -87,21 +89,66 @@ function App() {
     <ClickCounter />
     <div className="notes-grid">
         {notes.map((note) => (
-         <div
-           key={note.id}
-           className="note-item">
-           <div className="notes-header">
-             <button>x</button>
-           </div>
-           <h2> {note.title} </h2>
-           <p> {note.content} </p>
-           <p> {note.label} </p>
-           <button onClick={() => toggleFavorite(note)}>
-              {favorites.includes(note.title) ? "Unfavorite" : "Favorite"}
+          <div key={note.id} className="note-item">
+            <div className="notes-header">
+            <button onClick={() => toggleFavorite(note)}>
+              {favorites.includes(note.title) ? "❤️" : "♡"}
             </button>
-         </div>
-       ))}
-     </div>
+            <button onClick={() => deleteNote(note.id)}>x</button>
+            
+            </div>
+
+            <h2
+              contentEditable
+              suppressContentEditableWarning={true}
+              onBlur={(e) => {
+                const updatedTitle = e.target.textContent || '';
+                setNotes((prevNotes) =>
+                  prevNotes.map((n) =>
+                    n.id === note.id ? { ...n, title: updatedTitle } : n
+                  )
+                );
+              }}
+            >
+              {note.title}
+            </h2>
+
+            <p
+              contentEditable
+              suppressContentEditableWarning={true}
+              onBlur={(e) => {
+                const updatedContent = e.target.textContent || '';
+                setNotes((prevNotes) =>
+                  prevNotes.map((n) =>
+                    n.id === note.id ? { ...n, content: updatedContent } : n
+                  )
+                );
+              }}
+            >
+              {note.content}
+            </p>
+
+            <select
+              value={note.label}
+              onChange={(e) => {
+                const updatedLabel = e.target.value as Label;
+                setNotes((prevNotes) =>
+                  prevNotes.map((n) =>
+                    n.id === note.id ? { ...n, label: updatedLabel } : n
+                  )
+                );
+              }}
+            >
+              <option value={Label.personal}>Personal</option>
+              <option value={Label.study}>Study</option>
+              <option value={Label.work}>Work</option>
+              <option value={Label.other}>Other</option>
+            </select>
+
+            
+          </div>
+        ))}
+      </div>
      <div className="favorites-list">
         <h3>Favorite Notes:</h3>
         {favorites.length === 0 ? (

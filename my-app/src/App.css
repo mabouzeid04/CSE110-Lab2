@@ -76,7 +76,7 @@
   gap: 20px;
  }
  
- .note-item {
+ div.note-item {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
@@ -99,7 +99,7 @@
   cursor: pointer;
   max-width: fit-content;
  }
- 
+
  h2 {
   margin: 0;
  }
@@ -131,18 +131,18 @@
   background-color: rgb(106, 175, 198);
   cursor: pointer;
  }
- .edit-buttons {
+ div.edit-buttons {
   display: flex;
   justify-content: space-evenly;
   gap: 5px;
  }
  
- .edit-buttons button {
+ edit-buttons button {
   flex: 1;
  }
  
- .edit-buttons button:last-of-type {
+ edit-buttons button:last-of-type {
   background-color: rgb(220, 89, 89);
-  color: white;
+  color: red;
  }
     
