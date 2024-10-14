@@ -61,6 +61,7 @@ const initialNote = {
   
       <div>
         <textarea
+        placeholder="Note Content"
           onChange={(event) =>
             setCreateNote({ ...createNote, content: event.target.value })
           }
