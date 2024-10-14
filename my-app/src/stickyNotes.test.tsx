@@ -14,7 +14,7 @@ describe("Create StickyNote", () => {
     test("creates a new note", () => {
       render(<StickyNotes />);
    
-   // Please make sure your sticky note has a title and content input field with the following placeholders.
+   // check placholder
       const createNoteTitleInput = screen.getByPlaceholderText("Note Title");
       const createNoteContentTextarea =
         screen.getByPlaceholderText("Note Content");
@@ -36,11 +36,11 @@ describe("Create StickyNote", () => {
    
 describe('Sticky Notes Component', () => {
 
-    // read notes
+    //read notes
     test('displays all notes that are created', () => {
       render(<StickyNotes />);
   
-      // find inputs
+// find inputs
       const titleInput = screen.getByPlaceholderText('Note Title');
       const contentInput = screen.getByPlaceholderText('Note Content');
       const createNoteButton = screen.getByText('Create Note');
@@ -70,7 +70,7 @@ describe('Sticky Notes Component', () => {
 
     test('updates note title and content', () => {
         render(<StickyNotes />);
-    
+    // check jthis
         
         const titleInput = screen.getByPlaceholderText('Note Title');
         const contentInput = screen.getByPlaceholderText('Note Content');
@@ -100,24 +100,25 @@ describe('Sticky Notes Component', () => {
         render(<StickyNotes />);
     
         //find inputs
-        const titleInput = screen.getByPlaceholderText('Note Title');
-        const contentInput = screen.getByPlaceholderText('Note Content');
+        const title_input = screen.getByPlaceholderText('Note Title');
+        const content_input = screen.getByPlaceholderText('Note Content');
         const createNoteButton = screen.getByText('Create Note');
     
         //create not
-        fireEvent.change(titleInput, { target: { value: 'Note to be deleted' } });
-        fireEvent.change(contentInput, { target: { value: 'Content to be deleted' } });
+        fireEvent.change(title_input, { target: { value: 'Note to be deleted' } });
+        fireEvent.change(content_input, { target: { value: 'Content to be deleted' } });
         fireEvent.click(createNoteButton);
     
+        //make sure works with other file
         // not displayed?
-        const noteTitle = screen.getByText('Note to be deleted');
-        expect(noteTitle).toBeInTheDocument();
+        const note_title = screen.getByText('Note to be deleted');
+        expect(note_title).toBeInTheDocument();
     
         // delete
-        const deleteButton = screen.getByText('x'); // Assuming the delete button shows 'x'
-        fireEvent.click(deleteButton);
+        const deleteButton = screen.getAllByText('x'); // Assuming the delete button shows 'x'
+        fireEvent.click(deleteButton[deleteButton.length-1]);
     
         // note deleted
-        expect(noteTitle).not.toBeInTheDocument();
+        expect(note_title).not.toBeInTheDocument();
     });
 })

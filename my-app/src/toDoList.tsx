@@ -14,21 +14,29 @@ export function ToDoList() {
  function handleCheckboxClick(e: React.ChangeEvent<HTMLInputElement>) {
    const checkbox: HTMLInputElement = e.target as HTMLInputElement;
 
-   const itemName = checkbox.name;
+   const item_name = checkbox.name;
 
-   const itemIndex = items.findIndex((item) => item.name === itemName);
-   items[itemIndex] = { name: itemName, isPurchased: checkbox.checked };
+   const itemIdx = items.findIndex((item) => item.name === item_name);
+   items[itemIdx] = { name: item_name, isPurchased: checkbox.checked };
 
+   //finish
    const uncheckedItems = items.filter((item) => !item.isPurchased);
    const checkedItems = items.filter((item) => item.isPurchased);
 
-   const newItems = uncheckedItems.concat(checkedItems);
+   const new_items = uncheckedItems.concat(checkedItems);
 
-   setItems(newItems);
+   setItems(new_items);
 
+   // check
    const diff = checkbox.checked ? 1 : -1;
+   if(checkbox.checked) {
+    setNumRemainingItems(numRemainingItems + 1);
+   }
+   else{
+    setNumRemainingItems(Math.max(0, numRemainingItems - 1));
+   }
 
-   setNumRemainingItems(numRemainingItems + diff);
+   
  }
 
  return (
@@ -38,23 +46,27 @@ export function ToDoList() {
      <div className="App-body">
        Items bought: {numRemainingItems}
        <form action=".">
-         {items.map((item) => ListItem(item, handleCheckboxClick))}
+        {items.map((item) => (
+            <ListItem key={item.name} item={item} changeHandler={handleCheckboxClick} />
+        ))}
        </form>
      </div>
    </div>
  );
 }
 
-function ListItem(item: GroceryItem, changeHandler: ChangeEventHandler) {
+function ListItem({item, changeHandler}: {item: GroceryItem, changeHandler: ChangeEventHandler}) {
  return (
    <div>
-     <input
-       type="checkbox"
-       onChange={changeHandler}
-       checked={item.isPurchased}
-       name={item.name}
-     />
-     {item.name}
+    <label>
+        <input
+        type="checkbox"
+        onChange={changeHandler}
+        checked={item.isPurchased}
+        name={item.name}
+        />
+        {item.name}
+    </label>
    </div>
  );
 }

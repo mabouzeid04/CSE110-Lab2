@@ -18,14 +18,14 @@ const initialNote = {
     const deleteNote = (id: number) => {
       setNotes(notes.filter((note) => note.id !== id));
     };
-    // Function to toggle a note as favorite
+    // favorite note
     const toggleFavorite = (note: Note) => {
       setFavorites((prevFavorites) => {
         if (prevFavorites.includes(note.title)) {
-          // If the note is already a favorite, remove it
+          // remove favorite
           return prevFavorites.filter((fav) => fav !== note.title);
         } else {
-          // Otherwise, add it to the favorites list
+          // favorite note
           return [...prevFavorites, note.title];
         }
       });
@@ -33,16 +33,16 @@ const initialNote = {
     const createNoteHandler = (e: React.FormEvent) => {
       e.preventDefault();
       if (createNote.title && createNote.content) {
-        // Create a new note with an ID based on the current length of notes
+        // Create note
         const newNote = {
           ...createNote,
-          id: notes.length + 1, // ID is determined by the length of the notes list
+          id: notes.length + 1, // Node ID
         };
         setNotes([...notes, newNote]);
-        setCreateNote(initialNote); // Reset the createNote state
+        setCreateNote(initialNote); 
       }
     };
-    // Use effect to observe state changes (for debugging purposes)
+    
     useEffect(() => {
       console.log("Favorites updated: ", favorites);
     }, [favorites]);
